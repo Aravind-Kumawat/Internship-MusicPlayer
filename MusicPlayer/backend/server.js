@@ -1,8 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import authRoute from "./routes/authRoutes.js"
+import authRouter from "./routes/authRoutes.js";
 import { connectDB } from "./config/db.js";
+import songRouter from "./routes/songRoutes.js";
 
 dotenv.config();
 
@@ -19,8 +20,8 @@ app.use(cors({
 }));
 // Handle API's
 
-app.use('/api/auth', authRoute ); // User Authentication
-
+app.use('/api/auth', authRouter ); // User Authentication
+app.use('/api/song',songRouter);
 
 //Listening to server..
 app.listen(PORT, () => {

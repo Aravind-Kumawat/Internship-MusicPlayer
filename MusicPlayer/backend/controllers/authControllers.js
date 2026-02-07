@@ -94,8 +94,6 @@ const login = async (req, res) => {
     }
 }
 
-//Testing protected Route
-
 //forgot password
 
 const forgotpassword = async (req, res) => {
@@ -168,17 +166,55 @@ const resetPassword = async (req, res) => {
 
 };
 
-const editProfile = async (req,res) => {
+const editProfile = async (req, res) => {
     try {
         const userId = req.user?.id;
-        if(!userId) return res.status(401).json({message : "Not Authenticated"});
-        const { name, email, avatar, currentPassword, newPassword} = req.body;
+        if (!userId) return res.status(401).json({ message: "Not Authenticated" });
+        const { name, email, avatar, currentPassword, newPassword } = req.body;
         const user = await User.findById(userId);
-        if(name) user.name = name;
+        if (name) user.name = name;
+        if (email) user.email = email;
+
+        if (!currentPassword || !newPassword) {
+            return  res.status(400).json({ message: "Both current and new password are required!" });
+        }
+
+        const isMatch = await user.comparePassword(currentPassword);
+        if (!isMatch) {
+            return res.status(400).json({ message: "current Password is incorrect" });
+        }
+
+        if (newPassword.length < 6) {
+            return res.status(400).json({ message: "Password must be atleast of length 6!" });
+        }
+
+        user.password = newPassword;
+
+        if(avatar){
+            const uploadResponse = await imageKit.upload({
+                file : avatar,
+                fileName : `avatar_${userId}_${Date.now()}.jpg`,
+                folder:"/mern-music-player",
+            });
+            user.avatar = uploadResponse.url;
+        }
+
+        await user.save();
+
+        return res.status(200).json({
+            user : {
+                id : user._id,
+                name : user.name,
+                email:user.email,
+                avatar : user.avatar,
+            },
+            message : "Profile updated succesfully"
+        });
 
     } catch (error) {
-        
+        console.log("Error Modifiying Profile",error.message);
+        res.status(500).json({message : "Error in Updating Profile!"});
     }
 }
 
-export { signup, login, forgotpassword, resetPassword };
+export { signup, login, forgotpassword, resetPassword, editProfile };

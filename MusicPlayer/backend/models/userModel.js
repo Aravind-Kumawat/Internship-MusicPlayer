@@ -25,6 +25,14 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
     resetPasswordTokenExpires: Date,
+    favourites :{
+        id : { type : String, required : true},
+        name : String, 
+        artist_name : String,
+        image : String,
+        duration : String,
+        audio : String,
+    },
 }, { timestamps: true });
 
 // Pre-save hook for hashing password
