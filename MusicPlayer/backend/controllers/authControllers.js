@@ -2,6 +2,8 @@ import imagekit from "../config/imagekit.js";
 import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import sendMail from "../utilities/sendEmail.js";
+
 //creating token
 
 const createToken = (userId) => {
@@ -46,7 +48,7 @@ const signup = async (req, res) => {
             user: {
                 id: user._id,
                 name: user.name,
-                eamil: user.email,
+                email: user.email,
                 avatar: user.avatar,
             },
             user_token,
@@ -71,7 +73,8 @@ const login = async (req, res) => {
         }
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
-            res.status(400).json({ message: "Invalid credentials!" });
+            console.log(isMatch);
+            return res.status(400).json({ message: "Invalid credentials!" });
         }
         const user_token = createToken(user._id);
         return res.status(200).json({
@@ -79,24 +82,19 @@ const login = async (req, res) => {
             user: {
                 id: user._id,
                 name: user.name,
-                eamil: user.email,
+                email: user.email,
             },
             user_token,
         });
     } catch (error) {
         console.error("Login not succesfull", error);
-        res.status(500).json({
-            message: "Login Error"
+        return res.status(500).json({
+            message: "Internal server Error"
         });
     }
 }
 
 //Testing protected Route
-
-const getme = (req, res) => {
-    if (!req.user) return res.status(401).json({ message: "Unauthorized user" });
-    res.status(200).json(req.user);
-}
 
 //forgot password
 
@@ -110,6 +108,7 @@ const forgotpassword = async (req, res) => {
 
         //Generate a token
         const resetToken = crypto.randomBytes(32).toString("hex");
+        console.log("Reset token(10 mins) : ", resetToken);
 
         //hash before saving
         const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
@@ -120,10 +119,66 @@ const forgotpassword = async (req, res) => {
 
         const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
+        //send mail
+        await sendMail({
+            to: user.email,
+            subject: "Reset your Password",
+            html: ` 
+            <h1>Password Reset</h1>
+            <p>Click on the link below to reset your password </p>
+            <a href = "${resetUrl}">${resetUrl}</a>
+            <p>This link expires in 10 minutes</p>
+            `
+        });
+        return res.status(200).json({ message: "password reset email sent" });
+
     } catch (error) {
-        console.log("Failed Changing Password");
-        res.status(500).json({message : "Failed Resetting Password"});
+        console.log("Failed Changing Password", error);
+        return res.status(500).json({ message: "Internal Server Error!" });
     }
 }
 
-export { signup, login, getme };
+const resetPassword = async (req, res) => {
+    try {
+        const { token } = req.params;
+        const { password } = req.body;
+
+        if (!password || password.length < 6) {
+            return res.status(400).json({ message: "Password must be atleast 6 length" })
+        }
+
+        const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+        const user = await User.findOne({
+            resetPasswordToken: hashedToken,
+            resetPasswordTokenExpires: { $gt: Date.now() },
+        });
+
+        if (!user) return res.status(400).json({ message: "Password Token is Invalid or Expired!" });
+        user.password = password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordTokenExpires = undefined;
+
+        await user.save();
+
+        res.status(200).json({ message: "Password Updated Successfully!" })
+    } catch (error) {
+        console.error("Forgot Password Error:", error);
+        return res.status(500).json({ message: "Internal Server Error!" });
+    }
+
+};
+
+const editProfile = async (req,res) => {
+    try {
+        const userId = req.user?.id;
+        if(!userId) return res.status(401).json({message : "Not Authenticated"});
+        const { name, email, avatar, currentPassword, newPassword} = req.body;
+        const user = await User.findById(userId);
+        if(name) user.name = name;
+
+    } catch (error) {
+        
+    }
+}
+
+export { signup, login, forgotpassword, resetPassword };

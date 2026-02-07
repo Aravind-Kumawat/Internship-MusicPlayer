@@ -8,7 +8,6 @@ export const protect = async (req,res,next) => {
     }
 
     const user_token = authHeader.split(" ")[1];
-
     
     try {
         const decoded = jwt.verify(user_token, process.env.JWT_SECRET);
@@ -24,7 +23,7 @@ export const protect = async (req,res,next) => {
         next();
 
     } catch (error) {
-        console.error("TOken verfication Failed",error.message);
+        console.error("Token verfication Failed",error.message);
         return res.status(401).json({ message : "Invalid or expired token"});
     }
 

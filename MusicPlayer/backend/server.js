@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-//MongoDB connection
+//MongoDB connection and CORS validation
 connectDB();
 app.use(express.json());
 app.use(cors({
@@ -19,12 +19,7 @@ app.use(cors({
 }));
 // Handle API's
 
-app.use('/api/auth', authRoute );
-
-app.get('/api',(req,res) => {
-    res.status(200).json({mesage : "Hello there.."})
-    console.log("Jai Hind Jai Bharat!");
-});
+app.use('/api/auth', authRoute ); // User Authentication
 
 
 //Listening to server..
