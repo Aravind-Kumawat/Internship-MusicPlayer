@@ -93,9 +93,10 @@ const login = async (req, res) => {
         });
     }
 }
-
-//forgot password
-
+const getMe = async (req, res) => {
+    if(!req.user) return res.status(401).json({ message: "Not Authenticated" });
+    return res.status(200).json(req.user);
+}
 const forgotpassword = async (req, res) => {
     try {
         const { email } = req.body;
@@ -135,7 +136,6 @@ const forgotpassword = async (req, res) => {
         return res.status(500).json({ message: "Internal Server Error!" });
     }
 }
-
 const resetPassword = async (req, res) => {
     try {
         const { token } = req.params;
@@ -164,8 +164,7 @@ const resetPassword = async (req, res) => {
         return res.status(500).json({ message: "Internal Server Error!" });
     }
 
-};
-
+}
 const editProfile = async (req, res) => {
     try {
         const userId = req.user?.id;
@@ -176,7 +175,7 @@ const editProfile = async (req, res) => {
         if (email) user.email = email;
 
         if (!currentPassword || !newPassword) {
-            return  res.status(400).json({ message: "Both current and new password are required!" });
+            return res.status(400).json({ message: "Both current and new password are required!" });
         }
 
         const isMatch = await user.comparePassword(currentPassword);
@@ -190,11 +189,11 @@ const editProfile = async (req, res) => {
 
         user.password = newPassword;
 
-        if(avatar){
+        if (avatar) {
             const uploadResponse = await imageKit.upload({
-                file : avatar,
-                fileName : `avatar_${userId}_${Date.now()}.jpg`,
-                folder:"/mern-music-player",
+                file: avatar,
+                fileName: `avatar_${userId}_${Date.now()}.jpg`,
+                folder: "/mern-music-player",
             });
             user.avatar = uploadResponse.url;
         }
@@ -202,19 +201,20 @@ const editProfile = async (req, res) => {
         await user.save();
 
         return res.status(200).json({
-            user : {
-                id : user._id,
-                name : user.name,
-                email:user.email,
-                avatar : user.avatar,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                avatar: user.avatar,
             },
-            message : "Profile updated succesfully"
+            message: "Profile updated succesfully"
         });
 
     } catch (error) {
-        console.log("Error Modifiying Profile",error.message);
-        res.status(500).json({message : "Error in Updating Profile!"});
+        console.log("Error Modifiying Profile", error.message);
+        res.status(500).json({ message: "Error in Updating Profile!" });
     }
 }
 
-export { signup, login, forgotpassword, resetPassword, editProfile };
+
+export { signup, login, forgotpassword,getMe, resetPassword, editProfile };

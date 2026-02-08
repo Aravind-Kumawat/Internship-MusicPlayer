@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     resetPasswordTokenExpires: Date,
     favourites :{
-        id : { type : String, required : true},
+        id : { type : String, default : ""},
         name : String, 
         artist_name : String,
         image : String,

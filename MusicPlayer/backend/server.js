@@ -21,7 +21,7 @@ app.use(cors({
 // Handle API's
 
 app.use('/api/auth', authRouter ); // User Authentication
-app.use('/api/song',songRouter);
+app.use('/api/songs',songRouter);
 
 //Listening to server..
 app.listen(PORT, () => {
