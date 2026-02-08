@@ -13,7 +13,7 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         //set loading state during API calls(login, register, fetchUser)
-        setLodaing: (state, action) => {
+        setLoading: (state, action) => {
             state.isLoading = action.payload;
             state.error = null;
         },
@@ -22,7 +22,7 @@ const authSlice = createSlice({
         setUser : (state,action) => {
             state.user = action.payload.user;
             state.token = action.payload.token;
-            state.isAuthenticated = true,
+            state.isAuthenticated = true;
             state.isLoading = false;
             state.error = null;
 
@@ -53,6 +53,6 @@ const authSlice = createSlice({
     },
 });
 
-export const {setLodaing,setUser,setError,logout,updateFavourites,clearError} = authSlice.actions;
+export const {setLoading,setUser,setError,logout,updateFavourites,clearError} = authSlice.actions;
 
-export default authSlice.reducer;
+export default authSlice.reducer;   

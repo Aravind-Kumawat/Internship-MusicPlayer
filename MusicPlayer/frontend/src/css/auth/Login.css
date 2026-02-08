@@ -1,0 +1,357 @@
+/* ============================================================
+   1. NAVBAR AUTH BUTTONS (The Visible Buttons)
+   ============================================================ */
+.auth-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  
+  /* CRITICAL: Pushes buttons to the far right */
+  margin-left: auto; 
+}
+
+.auth-btn {
+  padding: 8px 24px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Signup Button - Green */
+.auth-btn.signup {
+  background-color: #1db954; /* Spotify Green */
+  color: #000;
+}
+
+.auth-btn.signup:hover {
+  transform: scale(1.05);
+  background-color: #1ed760;
+  box-shadow: 0 4px 12px rgba(29, 185, 84, 0.4);
+}
+
+/* Login Button - Transparent White */
+.auth-btn.login {
+  background-color: rgba(255, 255, 255, 0.1); /* Slight background */
+  color: #fff;
+}
+
+.auth-btn.login:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+/* Logout Button - Red */
+.auth-btn.logout {
+  background-color: rgba(220, 38, 38, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.auth-btn.logout:hover {
+  background-color: rgba(220, 38, 38, 0.4);
+  color: #fff;
+  border-color: #f87171;
+}
+
+/* ============================================================
+   2. LOGIN FORM STYLES
+   ============================================================ */
+.login-wrapper {
+  color: #fff;
+  padding: 8px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.login-title {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ffffff, #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.login-subtitle {
+  margin: 0 0 24px 0;
+  font-size: 15px;
+  color: rgba(191, 191, 191, 0.9);
+  font-weight: 400;
+  animation: slideInLeft 0.6s ease-out 0.1s both;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: slideInUp 0.6s ease-out 0.2s both;
+}
+
+.login-error {
+  padding: 12px 16px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 12px;
+  color: #fca5a5;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: -8px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: shakeError 0.5s ease-out;
+}
+
+.login-submit-btn {
+  margin-top: 8px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-submit-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #9333ea, #db2777);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.login-submit-btn:hover::before {
+  opacity: 1;
+}
+
+.login-submit-btn:hover {
+  box-shadow: 0 6px 25px rgba(168, 85, 247, 0.6), 0 0 40px rgba(168, 85, 247, 0.3);
+  transform: translateY(-2px);
+}
+
+.login-submit-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.login-submit-btn span {
+  position: relative;
+  z-index: 1;
+}
+
+.login-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2);
+}
+
+/* ============================================================
+   3. SIGNUP FORM STYLES (Tailwind Syntax)
+   ============================================================ */
+.signup-wrapper {
+  @apply text-white p-2;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.signup-title {
+  @apply mb-2 text-[28px] font-bold tracking-wide;
+  background: linear-gradient(135deg, #ffffff, #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.signup-subtitle {
+  @apply mb-6 text-[15px] font-normal text-gray-300;
+  animation: slideInLeft 0.6s ease-out 0.1s both;
+}
+
+.signup-form {
+  @apply flex flex-col gap-5;
+  animation: slideInUp 0.6s ease-out 0.2s both;
+}
+
+.profile-image-container {
+  @apply relative mx-auto mb-2 h-24 w-24 rounded-full 
+         bg-white/5 border border-white/10 
+         flex items-center justify-center
+         backdrop-blur-md transition-all duration-300;
+}
+
+.profile-image-container:hover {
+  @apply border-purple-500/40 shadow-lg shadow-purple-500/20;
+}
+
+.profile-image {
+  @apply h-full w-full rounded-full object-cover;
+}
+
+.profile-placeholder {
+  @apply flex items-center justify-center text-gray-300;
+}
+
+.image-upload-icon {
+  @apply absolute -bottom-1 -right-1 h-8 w-8 
+         rounded-full bg-gradient-to-br from-purple-600 to-pink-600
+         flex items-center justify-center text-sm cursor-pointer
+         shadow-lg shadow-purple-500/40
+         transition-all duration-300;
+}
+
+.image-upload-icon:hover {
+  @apply scale-110 shadow-purple-500/70;
+}
+
+.signup-error {
+  @apply px-4 py-3 rounded-xl text-sm font-medium
+         text-red-300 bg-red-500/10
+         border border-red-500/40
+         backdrop-blur-md;
+  animation: shakeError 0.5s ease-out;
+}
+
+.signup-actions {
+  @apply flex justify-end mt-2;
+}
+
+.signup-btn-submit {
+  @apply relative overflow-hidden
+         px-6 py-2 rounded-xl
+         font-bold text-[15px] uppercase tracking-wide
+         text-white cursor-pointer border-none
+         transition-all duration-300
+         bg-gradient-to-r from-purple-600 to-pink-600
+         shadow-lg shadow-purple-500/40;
+}
+
+.signup-btn-submit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #9333ea, #db2777);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.signup-btn-submit:hover::before {
+  opacity: 1;
+}
+
+.signup-btn-submit:hover {
+  @apply -translate-y-0.5 shadow-xl shadow-purple-500/60;
+}
+
+.signup-btn-submit:active {
+  @apply scale-95 translate-y-0;
+}
+
+.signup-btn-submit span {
+  position: relative;
+  z-index: 1;
+}
+
+.signup-btn-submit:disabled {
+  @apply opacity-50 cursor-not-allowed shadow-purple-500/20;
+}
+
+/* ============================================================
+   4. ANIMATIONS
+   ============================================================ */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+/* ============================================================
+   5. FORGOT PASSWORD & RESPONSIVE
+   ============================================================ */
+.forgot-wrapper {
+  @apply text-left;
+}
+
+.forgot-link {
+  @apply text-sm text-purple-400 cursor-pointer underline underline-offset-4
+         transition-colors duration-200 mx-2;
+}
+
+.forgot-link:hover {
+  @apply text-pink-400;
+}
+
+.forgot-box {
+  @apply mt-3 p-3 rounded-xl bg-white/5 border border-white/10
+         backdrop-blur-md flex flex-col gap-2;
+}
+
+.forgot-btn {
+  @apply mt-1 px-4 py-2 rounded-lg text-sm font-semibold
+         bg-gradient-to-r from-purple-600 to-pink-600
+         text-white cursor-pointer
+         transition-all duration-300;
+}
+
+.forgot-btn:hover {
+  @apply shadow-lg shadow-purple-500/40 -translate-y-0.5;
+}
+
+.forgot-msg {
+  @apply text-xs text-gray-300;
+}
+
+@media (max-width: 768px) {
+  .login-wrapper { padding: 4px; }
+  .login-title { font-size: 24px; }
+  .login-subtitle { font-size: 14px; margin-bottom: 20px; }
+  .login-form { gap: 16px; }
+  .login-submit-btn { padding: 12px 20px; font-size: 14px; }
+  
+  .signup-wrapper { @apply p-1; }
+  .signup-title { @apply text-[24px]; }
+  .signup-subtitle { @apply text-sm; }
+  .signup-form { @apply gap-4; }
+  .signup-btn-submit { @apply px-5 py-2.5 text-sm; }
+}
+
+@media (max-width: 480px) {
+  .login-title { font-size: 22px; }
+  .login-subtitle { font-size: 13px; margin-bottom: 18px; }
+  .login-form { gap: 14px; }
+  .login-submit-btn { padding: 11px 18px; }
+
+  .signup-title { @apply text-[22px]; }
+  .signup-subtitle { @apply text-[13px] mb-4; }
+  .profile-image-container { @apply h-20 w-20; }
+  .signup-btn-submit { @apply px-4 py-2; }
+}
