@@ -56,7 +56,7 @@ const Auth = () => {
           }}
         >
           {authMode === "signup" && <Signup />}
-          {authMode === "login" && <Login />}
+          {(authMode === "login" || authMode === "forgot") && <Login />}
         </Modal>
       )}
     </div>

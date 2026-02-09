@@ -96,7 +96,7 @@ export const useAudioPlayer = (songs) => {
         if (!audio || !audio.src) return;
 
         if (audioState.isPlaying) {
-            audio.pause();
+            audio.paused;
             dispatch({ type: "PAUSE" });
         } else {
             try {

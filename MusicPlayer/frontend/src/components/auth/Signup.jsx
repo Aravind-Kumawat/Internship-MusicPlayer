@@ -50,8 +50,9 @@ const Signup = () => {
       });
 
       const data = res.data || {};
-      dispatch(setUser({ user: data.user, token: data.token }));
-      localStorage.setItem('token', data.token);
+      const token = data.user_token; // backend returns 'user_token'
+      dispatch(setUser({ user: data.user, token }));
+      localStorage.setItem('token', token);
       dispatch(closeAuthModal());
       console.log("Signup successful");
 

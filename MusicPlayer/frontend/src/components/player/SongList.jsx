@@ -1,7 +1,7 @@
 import { formatTime } from "../../../utils/helper";
 import "../../css/mainArea/SongList.css";
 
-const SongList = ({ songs }) => {
+const SongList = ({ songs, currentIndex, onSelectSong }) => {
   if (!songs || songs.length === 0) {
     return (
       <div className="songlist-root">
@@ -42,12 +42,11 @@ const SongList = ({ songs }) => {
 
           <tbody>
             {songs.map((song, index) => (
-              <tr key={song.id} onClick={() => {
-                onSelectSong(index);
-              }
-              className={`songlist-row ${index === currentIndex ? "song-row-active" : ""}`}
-                
-              }>
+              <tr 
+                key={song.id} 
+                onClick={() => onSelectSong(index)}
+                className={`songlist-row ${index === currentIndex ? "song-row-active" : ""}`}
+              >
             <td className="songlist-td td-index">{index + 1}</td>
             <td className="songlist-td">{song.name}</td>
             <td className="songlist-td">{song.artist_name}</td>

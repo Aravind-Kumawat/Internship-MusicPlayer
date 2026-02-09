@@ -50,7 +50,7 @@ const Homepage = () => {
   }
   const playerControls = {
     playSongAtIndex,
-    handlePrev, handleNext, handleTogglePlay, handleEnded,
+    handlePrev, handleNext, handleTogglePlay, handleSeek,
   }
 
   const playerFeatures = {
@@ -117,7 +117,7 @@ const Homepage = () => {
       <div className="homepage-main-wrapper">
         {/* Sidebar */}
         <div className="homepage-sidebar">
-          <SideMenu setView={setView} view={view} />
+          <SideMenu setView={setView} view={view} openEditProfile= {() => setOpenEditProfile(true) } />
         </div>
         {/* Main Content */}
         <div className="homepage-content">
@@ -132,7 +132,11 @@ const Homepage = () => {
         </div>
       </div>
       {/* Footer Player */}
-      <Footer />
+      <Footer 
+        playerState={playerState}
+        playerControls={playerControls}
+        playerFeatures={playerFeatures}
+      />
     </div>
   );
 };
